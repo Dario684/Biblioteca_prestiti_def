@@ -12,7 +12,7 @@ from django.utils import timezone
 from ollama import chat
 from ollama import ChatResponse
 from django.http import JsonResponse
-from datetime import datetime
+import datetime
 import re
 # Create your views here.
 
@@ -138,16 +138,33 @@ def aggiungi_recensione(request, libro_id):
 
 
 def risposta(request):
-    prompt = "Quali sono i 5 libri più letti in Italia a ottobre 2025? Elenca titolo, autore e un motivo breve per ciascuno."
+    # Ottieni il mese e l'anno corrente in italiano
+    now = datetime.datetime.now()
+    month_names = {
+        1: 'gennaio', 2: 'febbraio', 3: 'marzo', 4: 'aprile',
+        5: 'maggio', 6: 'giugno', 7: 'luglio', 8: 'agosto',
+        9: 'settembre', 10: 'ottobre', 11: 'novembre', 12: 'dicembre'
+    }
+    current_month = month_names[now.month]
+    current_year = now.year
+    current_period = f"{current_month} {current_year}"
+    
+    # Prompt dinamico
+    prompt = f"Quali sono i 5 libri più letti in Italia a {current_period}? Elenca titolo, autore e un motivo breve per ciascuno."
+    
     try:
         response = chat(
             model='gemma3:4b', 
             messages=[{'role': 'user', 'content': prompt}]
         )
         answer = response['message']['content']
-        # Passa la risposta al template
-        return render(request, 'PrestitiLibro/risposta.html', {'answer': answer})
+        context = {
+            'current_month': current_month,
+            'period': current_period,
+            'answer': answer,
+        }
+        # Passa la risposta e il periodo al template (opzionale, per mostrare il mese)
+        return render(request, 'PrestitiLibro/risposta.html', context)
     except Exception as e:
-        # In caso di errore, puoi passare anche l'errore al template o gestirlo diversamente
         return render(request, 'PrestitiLibro/risposta.html', {'error': f'Errore Ollama: {str(e)}'})
   
