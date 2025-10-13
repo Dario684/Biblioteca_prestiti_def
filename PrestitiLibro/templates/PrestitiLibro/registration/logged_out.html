@@ -1,0 +1,10 @@
+{% extends 'PrestitiLibro/base.html' %}
+{% block title %}Logout{% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        <h1>Logout</h1>
+        <p>Hai effettuato il logout con successo.</p>
+        <a href="{% url 'login' %}" class="btn btn-primary">Accedi di nuovo</a>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Torna alla homepage</a>
+    </div>
+{% endblock %}

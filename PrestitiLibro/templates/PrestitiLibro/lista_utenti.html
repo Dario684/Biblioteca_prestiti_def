@@ -1,0 +1,21 @@
+{% extends 'PrestitiLibro/base.html' %}
+{% block title %}Lista utenti{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Elenco Utenti</title>
+</head>
+<body>
+    <a class="navbar-brand" href="{% url 'home' %}">
+    <i class="fas fa-book-open me-2"></i> Biblioteca
+</a>
+    <h1>Elenco Utenti</h1>
+    <ul>
+        {% for utente in utenti %}
+            <li>{{ utente.username }} ({{ utente.email }})</li>
+        {% empty %}
+            <li>Nessun utente trovato.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
