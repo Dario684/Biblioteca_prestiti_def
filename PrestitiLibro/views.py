@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from .models import Catalogo,Prestiti,Recensione
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from datetime import datetime, timedelta
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
@@ -72,7 +72,7 @@ def richiedi_prestito(request, libro_id):
         messages.error(request, f"Il libro '{libro.titolo}' non è disponibile.")
     return redirect('catalogo')
 
-@login_required
+
 @login_required
 def restituisci_prestito(request, libro_id):
     libro = get_object_or_404(Catalogo, id=libro_id)
@@ -158,12 +158,17 @@ def risposta(request):
             messages=[{'role': 'user', 'content': prompt}]
         )
         answer = response['message']['content']
+
+        cleaned_answer = re.sub(r'\*+', '', answer)  
+        cleaned_answer = re.sub(r'^\s*\.\s*', '', cleaned_answer, flags=re.MULTILINE) 
+        cleaned_answer = cleaned_answer.strip()  
+
         context = {
             'current_month': current_month,
             'period': current_period,
-            'answer': answer,
+            'answer': cleaned_answer,
         }
-        # Passa la risposta e il periodo al template (opzionale, per mostrare il mese)
+    
         return render(request, 'PrestitiLibro/risposta.html', context)
     except Exception as e:
         return render(request, 'PrestitiLibro/risposta.html', {'error': f'Errore Ollama: {str(e)}'})

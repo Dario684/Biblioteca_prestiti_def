@@ -11,6 +11,12 @@ class Catalogo(models.Model):
     data_pubblicazione = models.DateField()
     disponibilità = models.BooleanField(default = True)
 
+    class Meta:
+        permissions = [
+            ("can_borrow_book", "Può prendere in prestito libri"),
+            ("can_manage_loans", "Può gestire i prestiti"),
+        ]
+
     def __str__(self):
         return self.titolo
 
@@ -21,6 +27,9 @@ class Prestiti(models.Model):
     data_scadenza = models.DateField()
     data_restituzione = models.DateField(null=True, blank=True)
     restituito = models.BooleanField(default=False)
+
+    class Meta:
+        permissions = []
 
     def __str__(self):
         return f"{self.catalogo_id.titolo} - {self.utente_id.username}"

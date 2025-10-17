@@ -7,6 +7,9 @@ Libri più letti di {{current_month}}
 {% block content %}
 <h1>Libri più letti  di {{current_month }}</h1>
 <div class="book-list">
+    <a href="{% url 'home' %}" class="btn btn-main">
+        <i class="fas fa-home me-2"></i> Torna alla Home
+    </a>
     {% if books %}
         <ol>
             {% for book in books %}
