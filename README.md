@@ -1,0 +1,1 @@
+Progetto Biblioteca: In questo progetto ho realizzato un'applicazione relativa alla gestione dei prestiti dei libri di una biblioteca, utilizzando python con Django e dei templates html per visualizzare un interfaccia base per un sito di una biblioteca, il backend si fa partire con python manage.py runserver.
