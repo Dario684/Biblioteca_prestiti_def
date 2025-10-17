@@ -14,6 +14,10 @@ from ollama import ChatResponse
 from django.http import JsonResponse
 import datetime
 import re
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import viewsets
+from .serializer import CatalogoSerializer
 # Create your views here.
 
 def home(request):
@@ -172,4 +176,19 @@ def risposta(request):
         return render(request, 'PrestitiLibro/risposta.html', context)
     except Exception as e:
         return render(request, 'PrestitiLibro/risposta.html', {'error': f'Errore Ollama: {str(e)}'})
-  
+
+class CatalogoAPIView(APIView) :
+    def get(self, request):
+        catalogo = Catalogo.objects.all()
+        serializer = CatalogoSerializer(catalogo, many = True)
+        return Response(serializer.data)
+    def post(self, request):
+        serializer = CatalogoSerializer(data = request.data)
+        if serializer.is_valid() :
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+class CatalogoViewSet(viewsets.ModelViewSet) :
+    queryset = Catalogo.objects.all()
+    serializer_class = CatalogoSerializer

@@ -1,6 +1,11 @@
-from django.urls import path
-
+from django.urls import path,include
+from rest_framework.routers import DefaultRouter
+from .views import CatalogoAPIView
+from .views import CatalogoViewSet
 from . import views
+
+router = DefaultRouter()
+router.register(r'catalogo', CatalogoViewSet)
 
 urlpatterns = [
     path('',views.home, name = 'home'),
@@ -12,4 +17,6 @@ urlpatterns = [
     path('registrazione/', views.registrazione, name = "registrazione"),
     path('recensione/<int:libro_id>/', views.aggiungi_recensione, name = "aggiungi_recensione"),
     path('risposta/', views.risposta, name = "risposta"),
+    path('api/', CatalogoAPIView.as_view(), name ="api"),
+    path('custom-api/', include(router.urls)),
 ]
