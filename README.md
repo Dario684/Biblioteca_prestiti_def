@@ -1,2 +1,2 @@
 Progetto Biblioteca: In questo progetto ho realizzato un'applicazione relativa alla gestione dei prestiti dei libri di una biblioteca, utilizzando python con Django e dei templates html per visualizzare un interfaccia base per un sito di una biblioteca, il backend si fa partire con python manage.py runserver.
-Ho anche inserito un modello di ai molto limitato che fornisce una lista dei cinque libri più letti del mese corrente.
+Ho anche inserito un modello di ai molto limitato che fornisce una lista dei cinque libri più letti del mese corrente, si potrà quindi avere una risposta più esatta usando modelli più potenti
